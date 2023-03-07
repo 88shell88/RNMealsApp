@@ -1,20 +1,42 @@
 /** @format */
 
-import { FlatList, StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
 import { useLayoutEffect } from "react"; // not recomended, only for very specific use cases as parent renders may have not been called
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
 import Subtitle from "../components/MealDetail/Subtitle";
 import List from "../components/MealDetail/List";
+import IconButton from "../components/IconButton";
 
 function MealsDetailsScreen({ route, navigation }) {
   const mId = route.params.mealId; // can use useRoute hook
   const meal = MEALS.find((meal) => meal.id === mId);
 
+  function headerButtonPressHandler() {
+    console.log("header button pressed");
+  }
+
   useLayoutEffect(() => {
     const mealTitle = MEALS.find((meal) => meal.id === mId).title;
-    navigation.setOptions({ title: mealTitle });
-  }, [navigation, mId]);
+    navigation.setOptions({
+      title: mealTitle,
+      headerRight: () => (
+        <IconButton
+          onPress={headerButtonPressHandler}
+          icon="star"
+          color="white"
+        />
+      ),
+    });
+  }, [navigation, mId, headerButtonPressHandler]);
 
   return (
     <View style={styles.container}>
